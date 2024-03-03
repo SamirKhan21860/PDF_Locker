@@ -1,5 +1,5 @@
 from flask import Flask, render_template, request, send_file
-from PyPDF2 import PdfFileWriter, PdfFileReader
+from PyPDF2 import PdfWriter, PdfReader
 
 app = Flask(__name__)
 
@@ -18,10 +18,10 @@ def process():
             return 'Invalid file or password.'
         
         # Process PDF file
-        pdf_writer = PdfFileWriter()
-        pdf_reader = PdfFileReader(uploaded_file)
+        pdf_writer = PdfWriter()
+        pdf_reader = PdfReader(uploaded_file)
         
-        for page_num in range(pdf_reader.getNumPages()):
+        for page_num in range(len(pdf_reader.pages)):
             pdf_writer.addPage(pdf_reader.getPage(page_num))
         
         pdf_writer.encrypt(password)
@@ -29,10 +29,15 @@ def process():
         # Save the new PDF
         output_path = 'Locked_document.pdf'
         with open(output_path, "wb") as output_file:
-            pdf_writer.write(output_file)
+            pdf_writer.write(output_path)
+        output_file.close() # Close the output file explicitly
             
         return send_file(output_file, as_attachment=True)
-            
+     
+    except IOError as e:
+        return f"Error saving the file: {str(e)}"
+    except PermissionError as e:
+        return f"Permission error: {str(e)}"       
     except Exception as e:
         return str(e)
     
