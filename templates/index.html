@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PDF Locker</title>
+</head>
+
+<body>
+    <h1>PDF Locker</h1>
+    <form action="/process" method="post" enctype="multipart/form-data">
+        <label for="file">Choose a PDF file:</label>
+        <input type="file" name="file" accept=".pdf" required>
+        <br>
+        <label for="password">Enter password</label>
+        <input type="password" name="password" required>
+        <br>
+        <input type="submit" value="Lock PDF">
+    </form>
+</body>
+
+</html>
